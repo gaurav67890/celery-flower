@@ -1,0 +1,5 @@
+flask
+celery==5.0.5
+redis
+PyPDF2
+flower

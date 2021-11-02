@@ -1,0 +1,25 @@
+version: "2"
+services:
+  scheduler:
+    build: './'
+    volumes:
+      - /home/gaurav/Python-Flask-Redis-Celery-Docker/part4/MyScheduler/output:/usr/src/app/output
+      - /home/gaurav/Python-Flask-Redis-Celery-Docker/part4/MyScheduler/input:/usr/src/app/input
+    links:
+      - redis
+  redis:
+    image: 'redis:4-alpine'
+    volumes:
+      - /home/gaurav/Python-Flask-Redis-Celery-Docker/part4/MyScheduler/output:/usr/src/app/output
+      - /home/gaurav/Python-Flask-Redis-Celery-Docker/part4/MyScheduler/input:/usr/src/app/input 
+    ports:
+      - '6379:6379'
+  flower:
+    image: mher/flower
+    ports:
+      - 5555:5555
+    command: ["celery","--broker=redis://redis:0","flower","--port=5555"]
+    expose:
+      - 5555
+    depends_on:
+      - redis
